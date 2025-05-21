@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    background-color: #e3f2ff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content {
+    min-height: 80px;
+    background-color: #4b68eb;
+}
+
+
+.menu {
+    position: relative;
+    top: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.logo {
+    font-size: 25px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+}
+
+#menu {
+    display: none;
+}
+
+.menu label {
+    cursor: pointer;
+    display: none;
+}
+
+.menu .menu-icono {
+    width: 25px;
+}
+
+/* Navbar lista horizontal para escritorio */
+.menu .navbar ul {
+    display: flex;
+}
+
+.menu .navbar ul li {
+    margin-left: 20px;
+}
+
+.menu .navbar ul li a {
+    color: #d1d1d1;
+    font-size: 18px;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.menu .navbar ul li a:hover {
+    background-color: #374fbbc7;
+    color: white;
+}
+
+/* Contenedor del contenido principal */
+.main-content {
+    display: flex;
+    width: 100vw;
+    height: 20vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive - menú hamburguesa */
+@media (max-width: 991px) {
+
+    .menu {
+        top: 10px;
+        flex-wrap: wrap;
+        justify-content: space-between; /* logo no visible, botón derecha */
+        padding: 20px;
+    }
+
+    /* Mostrar label (botón hamburguesa) */
+    .menu label {
+        display: block;
+    }
+
+    /* Checkbox menú oculto */
+    #menu {
+        display: none;
+    }
+
+    /* Navbar inicialmente oculta */
+    .menu .navbar {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        background-color: #374fbb8e;
+        transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+        transform: translateY(-20px);
+        width: 100%;
+        margin-top: 10px; /* espacio con botón */
+    }
+
+    /* Cuando se activa el menú */
+    #menu:checked ~ .navbar {
+        max-height: 300px; /* ajusta según tu menú */
+        opacity: 1;
+        transform: translateY(0);
+        display: block;
+    }
+
+    /* Lista vertical en móvil */
+    .menu .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .menu .navbar ul li {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .menu .navbar ul li a {
+        display: block;
+        padding: 15px 20px;
+        color: #d1d1d1;
+        font-weight: bold;
+    }
+
+    .menu .navbar ul li a:hover {
+        background-color: #374fbbc7;
+        color: white;
+    }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%}{% endblock%}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    
+    <header>
+        <div class = "content">
+            <div class="menu container">
+                <span class="logo">Logo</span>
+                <input type="checkbox" id="menu"/>
+                <label for="menu">
+                    <img class="menu-icono" src="{{ url_for('static', filename='images/menu.png') }}" alt="">
+                </label>
+                <nav class="navbar">
+                    <ul>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/historico">Historico</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="main-content">
+            {% block body %}
+            {% endblock%}
+        </div>   
+    </header>
+</body>
+</html>

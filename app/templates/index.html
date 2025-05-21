@@ -1,0 +1,13 @@
+{% extends './layout.html'%}
+
+{% block title%}{{informacion.titulo}}{% endblock%}
+
+{% block body %}
+<ul>
+{% for m in informacion.maquinas %}
+    <li>{{m}}</li>
+{% endfor %}
+</ul>
+{% endblock%}
+
+    
