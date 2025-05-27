@@ -1,0 +1,100 @@
+{% extends './layout.html'%}
+
+{% block title %}Información de la máquina{% endblock %}
+
+{% block body %}
+<div class="container"> 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <h5 class="text-center mt-2 col-span-2">Máquina</h5>
+        <table class="table table-bordered table-hover table-striped col-span-2">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Fecha</th>
+                    <th>ID Máquina</th>
+                    <th>Línea de ensamblaje</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>{{ maquina.date }}</td>
+                    <td>{{ maquina.machine_id }}</td>
+                    <td>{{ maquina.assembly_line_no }}</td>
+                    {% if maquina.downtime == 1 %}
+                        <td>Caído</td>
+                    {% else %}
+                        <td>Funcionando</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="mt-5 ">
+        <h5 class="text-center col-span-2">Información de la máquina</h5>
+        <table class="table table-bordered table-hover table-striped col-span-2">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Consumo</th>
+                    <th>Fuerza del corte[kN]</th>
+                    <th>Presión del aire [bar]</th>
+                    <th>Temperatura del aceite [°C]</th>
+                    <th>Presión hidraulica [bar]</th>
+                    <th>Vibración de la herramienta [μm]</th>
+                    <th>Fuerza de torque [Nm]</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>{{ maquina.voltage_volts }} [V]</td>
+                    <td>{{ maquina.cutting_kn }}</td>
+                    <td>{{ maquina.air_system_pressure_bar }}</td>
+                    <td>{{ maquina.hydraulic_oil_temperature }}</td>
+                    <td>{{ maquina.hydraulic_pressure_bar }}</td>
+                    <td>{{ maquina.tool_vibration }}</td>
+                    <td>{{ maquina.torque_nm }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr class="mt-5">
+        <!-- Refrigerante -->
+        <div class="col-span-1">
+            <h5 class="text-center">Refrigerante</h5>
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>Presión [bar]</th>
+                        <th>Temperatura [°C]</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>{{ maquina.coolant_pressure_bar }}</td>
+                        <td>{{ maquina.coolant_temperature }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="mt-5">
+        <!-- Información del eje -->
+        <div class="col-span-1">
+            <h5 class="text-center">Información del eje</h5>
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>Temperatura [°C]</th>
+                        <th>RPM</th>
+                        <th>Vibración</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>{{ maquina.spindle_bearing_temperature }}</td>
+                        <td>{{ maquina.spindle_speed_rpm }}</td>
+                        <td>{{ maquina.spindle_vibration }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

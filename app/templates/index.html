@@ -3,11 +3,36 @@
 {% block title%}{{informacion.titulo}}{% endblock%}
 
 {% block body %}
-<ul>
-{% for m in informacion.maquinas %}
-    <li>{{m}}</li>
-{% endfor %}
-</ul>
+<div class="container mt-5 ">
+    <h2 class="text-center mb-4 mt-5">Última Actividad por Máquina</h2>
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="table-primary text-center">
+            <tr>
+                <th>Machine ID</th>
+                <th>Última Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            {% for m in informacion.maquinas %}
+            <tr>
+                <td>{{ m.machine_id }}</td>
+                <td>{{ m.date }}</td>
+                <td>
+                    {% if m.estado == 'Crítico' %}
+                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-danger btn-sm">Crítico</a>
+                    {% elif m.estado == 'Advertencia' %}
+                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-warning btn-sm">Advertencia</a>
+                    {% else %}
+                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-success btn-sm">Normal</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock%}
 
     

@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #e3f2ff;
+    background-color: #c3ccd428;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -20,7 +20,6 @@ body {
     min-height: 80px;
     background-color: #4b68eb;
 }
-
 
 .menu {
     position: relative;
@@ -53,7 +52,7 @@ body {
     width: 25px;
 }
 
-/* Navbar lista horizontal para escritorio */
+
 .menu .navbar ul {
     display: flex;
 }
@@ -74,13 +73,9 @@ body {
     color: white;
 }
 
-/* Contenedor del contenido principal */
 .main-content {
-    display: flex;
-    width: 100vw;
-    height: 20vh;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    padding: 20px;
 }
 
 /* Responsive - menú hamburguesa */
@@ -89,18 +84,13 @@ body {
     .menu {
         top: 10px;
         flex-wrap: wrap;
-        justify-content: space-between; /* logo no visible, botón derecha */
+        justify-content: space-between;
         padding: 20px;
     }
 
     /* Mostrar label (botón hamburguesa) */
     .menu label {
         display: block;
-    }
-
-    /* Checkbox menú oculto */
-    #menu {
-        display: none;
     }
 
     /* Navbar inicialmente oculta */
@@ -116,18 +106,17 @@ body {
         transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
         transform: translateY(-20px);
         width: 100%;
-        margin-top: 10px; /* espacio con botón */
+        margin-top: 10px;
     }
 
-    /* Cuando se activa el menú */
+    /* Mostrar menú cuando checkbox está activado */
     #menu:checked ~ .navbar {
-        max-height: 300px; /* ajusta según tu menú */
+        max-height: 300px;
         opacity: 1;
         transform: translateY(0);
         display: block;
     }
 
-    /* Lista vertical en móvil */
     .menu .navbar ul {
         flex-direction: column;
         width: 100%;
