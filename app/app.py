@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify
 from config import config
-from routes import maquina
+from routes import maquina, historico
 from models.maquinaModel import MaquinaModel
 
 app = Flask(__name__)
@@ -18,10 +18,6 @@ def index():
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
 
-@app.route('/historico')
-def historico():
-    historico = 'hola'
-    return render_template('historico.html',historico=historico)
 
 def page_not_found(error):
     return "<h1>Nada por aquí...</h1>", 404
@@ -29,7 +25,9 @@ def page_not_found(error):
 if __name__=='__main__':
     app.config.from_object(config['development'])
 
+    #registro de otras rutas
     app.register_blueprint(maquina.main, url_prefix='/detalle/<index>')
+    app.register_blueprint(historico.main, url_prefix='/Historico')
 
     app.register_error_handler(404, page_not_found)
     app.run()

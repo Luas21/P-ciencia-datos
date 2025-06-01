@@ -1,11 +1,177 @@
-{% extends './layout.html'%}
+{% extends './layout.html' %}
 
-{% block title%}Histórico{% endblock%}
+{% block title %}Histórico de Máquinas{% endblock %}
 
 {% block body %}
-<ul>
-    <li>{{historico}}</li>
-</ul>
-{% endblock%}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Histórico de Máquinas</h2>
 
-    
+    <form id="filtro-fechas" class="row g-3 justify-content-center">
+        <div class="col-md-4">
+            <label for="start_date" class="form-label">Fecha de inicio</label>
+            <input type="date" class="form-control" id="start_date" required>
+        </div>
+        <div class="col-md-4">
+            <label for="end_date" class="form-label">Fecha de fin</label>
+            <input type="date" class="form-control" id="end_date" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Generar Gráficos</button>
+        </div>
+    </form>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <h5 class="text-center">Comparativa Global</h5>
+            <canvas id="graficoLineas"></canvas>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h5 class="text-center" id="tituloMaq1">Máquina 1</h5>
+            <canvas id="graficoMaq1"></canvas>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h5 class="text-center" id="tituloMaq2">Máquina 2</h5>
+            <canvas id="graficoMaq2"></canvas>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h5 class="text-center" id="tituloMaq3">Máquina 3</h5>
+            <canvas id="graficoMaq3"></canvas>
+        </div>
+        <div class="col-12 mb-4 d-flex justify-content-center">
+            <div style="max-width: 400px; width: 100%;">
+                <h5 class="text-center">Estado Global</h5>
+                <canvas id="graficoPastel"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js desde CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('filtro-fechas');
+    const inputStart = document.getElementById('start_date');
+    const inputEnd = document.getElementById('end_date');
+
+    const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
+    const ctxLineas = document.getElementById('graficoLineas').getContext('2d');
+    const ctxMaq1 = document.getElementById('graficoMaq1').getContext('2d');
+    const ctxMaq2 = document.getElementById('graficoMaq2').getContext('2d');
+    const ctxMaq3 = document.getElementById('graficoMaq3').getContext('2d');
+
+    let graficoPastel, graficoLineas, graficoMaq1, graficoMaq2, graficoMaq3;
+
+    function cargarGraficos(start_date, end_date, actualizarInputs = true) {
+        fetch('/Historico/api/graficos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ start_date, end_date })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (actualizarInputs) {
+                inputStart.value = data.fecha_min;
+                inputEnd.value = data.fecha_max;
+            }
+
+            const datosPastel = {
+                labels: ['Funcionando', 'Caído'],
+                datasets: [{
+                    data: [data.funcionando, data.caido],
+                    backgroundColor: ['#4CAF50', '#F44336']
+                }]
+            };
+
+            if (graficoPastel) graficoPastel.destroy();
+            graficoPastel = new Chart(ctxPastel, {
+                type: 'pie',
+                data: datosPastel
+            });
+
+            const labels = data.fechas;
+            const datasets = Object.entries(data.maquinas).map(([machine_id, estados]) => ({
+                label: `Máquina ${machine_id}`,
+                data: estados,
+                borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                fill: false,
+                tension: 0.2
+            }));
+
+            if (graficoLineas) graficoLineas.destroy();
+            graficoLineas = new Chart(ctxLineas, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Fecha' } },
+                        y: { title: { display: true, text: 'Cantidad de caídas' }, beginAtZero: true }
+                    }
+                }
+            });
+
+            const maquinas = Object.entries(data.maquinas);
+            const machineCharts = [ctxMaq1, ctxMaq2, ctxMaq3];
+
+            for (let i = 0; i < 3; i++) {
+                if (!maquinas[i]) continue;
+                const [machine_id, estados] = maquinas[i];
+
+                document.getElementById(`tituloMaq${i + 1}`).textContent = `Máquina ${machine_id}`;
+
+                if (i === 0 && graficoMaq1) graficoMaq1.destroy();
+                if (i === 1 && graficoMaq2) graficoMaq2.destroy();
+                if (i === 2 && graficoMaq3) graficoMaq3.destroy();
+
+                const chart = new Chart(machineCharts[i], {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: `Máquina ${machine_id}`,
+                            data: estados,
+                            borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                            fill: false,
+                            tension: 0.2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { title: { display: true, text: 'Fecha' } },
+                            y: { title: { display: true, text: 'Caídas' }, beginAtZero: true }
+                        }
+                    }
+                });
+
+                if (i === 0) graficoMaq1 = chart;
+                if (i === 1) graficoMaq2 = chart;
+                if (i === 2) graficoMaq3 = chart;
+            }
+        })
+        .catch(error => console.error('Error al obtener los datos:', error));
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const start_date = inputStart.value;
+        const end_date = inputEnd.value;
+        cargarGraficos(start_date, end_date, false);
+    });
+
+    // Cargar por defecto al iniciar (últimos 3 meses)
+    const hoy = new Date();
+    const hace3meses = new Date();
+    hace3meses.setMonth(hoy.getMonth() - 3);
+
+    const fechaFin = hoy.toISOString().split('T')[0];
+    const fechaInicio = hace3meses.toISOString().split('T')[0];
+
+    cargarGraficos(fechaInicio, fechaFin, true);
+});
+</script>
+{% endblock %}
