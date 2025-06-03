@@ -13,13 +13,12 @@ class MaquinaModel():
             maquinas=[]
 
             with connection.cursor() as cursor:
-                #cursor.execute("SELECT * FROM maquina")
                 cursor.execute("""
                                  SELECT t.*
-                                 FROM maquina t
+                                 FROM machine_data t
                                  INNER JOIN (
                                      SELECT machine_id, MAX(date) AS max_date
-                                     FROM maquina
+                                     FROM machine_data
                                      GROUP BY machine_id
                                  ) latest ON t.machine_id = latest.machine_id AND t.date = latest.max_date
                                  ORDER BY machine_id ASC
@@ -47,8 +46,8 @@ class MaquinaModel():
             with connection.cursor() as cursor:
                 cursor.execute("""
                     SELECT t.*
-                    FROM maquina t
-                    WHERE t.index = %s
+                    FROM machine_data t
+                    WHERE t.id = %s
                 """, (index,))
                 resulset = cursor.fetchall()
 
@@ -72,7 +71,7 @@ class MaquinaModel():
 
             query = """
                 SELECT date, machine_id, downtime
-                FROM maquina
+                FROM machine_data
                 WHERE date BETWEEN %s AND %s
                 ORDER BY date ASC
             """
