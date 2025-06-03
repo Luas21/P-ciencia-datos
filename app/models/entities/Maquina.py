@@ -2,7 +2,7 @@ from utils.DateFormat import DateFormat
 
 class  Maquina:
     #Establecemos el formato general para obtener toda la información de nuestra tabla.
-    def __init__(self, id, date=None, machine_id=None, assembly_line_no=None, hydraulic_pressure_bar=None, coolant_pressure_bar=None, air_system_pressure_bar=None, coolant_temperature=None, hydraulic_oil_temperature=None, spindle_bearing_temperature=None, spindle_vibration=None, tool_vibration=None, spindle_speed_rpm=None, voltage_volts=None, torque_nm=None, cutting_kn=None, downtime=None):
+    def __init__(self, id=None, date=None, machine_id=None, assembly_line_no=None, hydraulic_pressure_bar=None, coolant_pressure_bar=None, air_system_pressure_bar=None, coolant_temperature=None, hydraulic_oil_temperature=None, spindle_bearing_temperature=None, spindle_vibration=None, tool_vibration=None, spindle_speed_rpm=None, voltage_volts=None, torque_nm=None, cutting_kn=None, downtime=None):
         self.id = id
         self.date = date
         self.machine_id = machine_id
