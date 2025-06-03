@@ -21,7 +21,7 @@ class MaquinaModel():
                                      FROM machine_data
                                      GROUP BY machine_id
                                  ) latest ON t.machine_id = latest.machine_id AND t.date = latest.max_date
-                                 ORDER BY machine_id ASC
+                                 ORDER BY t.machine_id ASC
                              """)
                 resulset=cursor.fetchall()
 
