@@ -1,4 +1,4 @@
-from utils.DateFormat import DateFormat
+#from utils.DateFormat import DateFormat
 
 class  Maquina:
     #Establecemos el formato general para obtener toda la información de nuestra tabla.
