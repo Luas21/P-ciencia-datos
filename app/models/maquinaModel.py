@@ -38,7 +38,7 @@ class MaquinaModel():
     
     #consulta para detalle_maquina, obtener la información del registro seleccionado.
     @classmethod
-    def get_info_maquina(self,index):
+    def get_info_maquina(self,id):
         try:
             connection = get_connection()
             info_maquinas = []
@@ -48,7 +48,7 @@ class MaquinaModel():
                     SELECT t.*
                     FROM machine_data t
                     WHERE t.id = %s
-                """, (index,))
+                """, (id,))
                 resulset = cursor.fetchall()
 
                 for row in resulset:

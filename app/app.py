@@ -46,9 +46,9 @@ def api_graficos():
         return jsonify({'error': str(ex)}), 500
 
 @app.route('/')
-def get_maquina(index):
+def get_maquina(id):
     try:
-        info_maquina = MaquinaModel.get_info_maquina(index) 
+        info_maquina = MaquinaModel.get_info_maquina(id) 
         return render_template('detalle_maquina.html', maquina=info_maquina)
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
