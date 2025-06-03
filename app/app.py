@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from config import config
+#from config import config
 from routes import maquina, historico
 from models.maquinaModel import MaquinaModel
 

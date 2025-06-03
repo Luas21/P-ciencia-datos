@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import DatabaseError
-from decouple import config
+#from decouple import config
 
 #parámetros establecidos en .env para realizar la conexión a la BD
 def get_connection():
