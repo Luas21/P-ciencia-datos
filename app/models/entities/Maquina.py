@@ -25,7 +25,7 @@ class  Maquina:
     def to_JSON(self):
         return {
             'id': self.id,
-            'date': DateFormat.convert_date(self.date),
+            'date': self.date,
             'machine_id': self.machine_id,
             'assembly_line_no': self.assembly_line_no,
             'hydraulic_pressure_bar': self.hydraulic_pressure_bar,
