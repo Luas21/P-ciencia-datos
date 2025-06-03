@@ -20,11 +20,11 @@
                 <td>{{ m.date }}</td>
                 <td>
                     {% if m.estado == 'Crítico' %}
-                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-danger btn-sm">Crítico</a>
+                        <a href="{{ url_for('get_maquina', index=m.index) }}" class="btn btn-danger btn-sm">Crítico</a>
                     {% elif m.estado == 'Advertencia' %}
-                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-warning btn-sm">Advertencia</a>
+                        <a href="{{ url_for('get_maquina', index=m.index) }}" class="btn btn-warning btn-sm">Advertencia</a>
                     {% else %}
-                        <a href="{{ url_for('maquina_blueprint.get_maquina', index=m.index) }}" class="btn btn-success btn-sm">Normal</a>
+                        <a href="{{ url_for('get_maquina', index=m.index) }}" class="btn btn-success btn-sm">Normal</a>
                     {% endif %}
                 </td>
             </tr>
