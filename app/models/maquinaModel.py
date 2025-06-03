@@ -14,7 +14,7 @@ class MaquinaModel():
 
             with connection.cursor() as cursor:
                 cursor.execute("""
-                                 SELECT t.*
+                                 SELECT t.machine_id, t.date
                                  FROM machine_data t
                                  INNER JOIN (
                                      SELECT machine_id, MAX(date) AS max_date
