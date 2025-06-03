@@ -10,6 +10,7 @@ def index():
     try:
         maquina=MaquinaModel.get_maquina()
         maquinas = maquina
+        return maquinas
         informacion = {
         'titulo': 'Panel de control',
         'maquinas': maquinas
@@ -21,7 +22,6 @@ def index():
 @app.route('/Historico')
 def get_historico():
     try:
-        historico = 'hola'
         return render_template('historico.html',historico=historico)
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
