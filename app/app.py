@@ -4,7 +4,8 @@ from routes import historico
 from models.maquinaModel import MaquinaModel
 
 app = Flask(__name__)
-print(app.url_map)
+app.register_blueprint(historico.main, url_prefix='/Historico')
+
 
 @app.route('/')
 def index():
@@ -19,31 +20,7 @@ def index():
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
 
-# @app.route('/Historico')
-# def get_historico():
-#     try:
-#         return render_template('historico.html',historico=historico)
-#     except Exception as ex:
-#         return jsonify({'message': str(ex)}),500
-    
-# @app.route('/api/graficos', methods=['POST'])
-# def api_graficos():
-#     try:
-#         data = request.get_json()
-#         if not data:
-#             return jsonify({'error': 'JSON no recibido o inválido'}), 400
-
-#         start_date = data.get('start_date')
-#         end_date = data.get('end_date')
-
-#         if not start_date or not end_date:
-#             return jsonify({'error': 'Faltan fechas en el JSON'}), 400
-
-#         resultado = MaquinaModel.get_historico_maquina(start_date, end_date)
-#         return resultado  
-
-#     except Exception as ex:
-#         return jsonify({'error': str(ex)}), 500
+#Aquí corté la ruta de historico
 
 @app.route('/detalle_maquina/<int:id>')
 def get_maquina(id):
@@ -62,7 +39,6 @@ if __name__=='__main__':
 
     #registro de otras rutas
     #app.register_blueprint(maquina.main, url_prefix='/detalle/<index>')
-    app.register_blueprint(historico.main, url_prefix='/Historico')
 
     app.register_error_handler(404, page_not_found)
     app.run()
