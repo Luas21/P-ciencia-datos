@@ -52,8 +52,9 @@ class MaquinaModel():
                     # Calcular índice de salud
                     indice = 0
                     for sensor, peso in pesos.items():
-                        valor = json_data[sensor]
-                        minimo, maximo = rangos[sensor]
+                        valor = float(json_data[sensor]) if json_data[sensor] is not None else None
+                        minimo = float(rangos[sensor][0])
+                        maximo = float(rangos[sensor][1])
                         if valor is not None and maximo != minimo:
                             normalizado = (valor - minimo) / (maximo - minimo)
                             indice += normalizado * peso
