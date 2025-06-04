@@ -62,15 +62,18 @@ class MaquinaModel():
                     json_data['indice_salud'] = round(indice, 3)
 
                     # Clasificar estado basado
-                    if indice > 0.75:
-                        json_data['estado'] = 'Crítico'
-                    elif indice > 0.5:
-                        json_data['estado'] = 'Necesario'
-                    elif indice > 0.25:
-                        json_data['estado'] = 'Recomendado'
+                    if json_data['downtime'] == 0:
+                        if indice > 0.75:
+                            json_data['estado'] = 'Crítico'
+                        elif indice > 0.5:
+                            json_data['estado'] = 'Necesario'
+                        elif indice > 0.25:
+                            json_data['estado'] = 'Recomendado'
+                        else:
+                            json_data['estado'] = 'Normal'
                     else:
-                        json_data['estado'] = 'Normal'
-
+                        json_data['estado'] = 'Crítico'
+                        
                     maquinas.append(json_data)
 
             connection.close()
