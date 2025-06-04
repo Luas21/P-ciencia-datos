@@ -10,7 +10,7 @@ def index():
     try:
         maquina=MaquinaModel.get_maquina()
         maquinas = maquina
-        return maquinas
+        
         informacion = {
         'titulo': 'Panel de control',
         'maquinas': maquinas
