@@ -11,7 +11,7 @@ app.register_blueprint(historico.main, url_prefix='/Historico')
 def index():
     try:
         maquinas=MaquinaModel.get_maquina()
-        return maquinas;
+        return maquinas
         informacion = {
         'titulo': 'Panel de control',
         'maquinas': maquinas
