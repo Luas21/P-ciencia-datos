@@ -49,7 +49,7 @@ class MaquinaModel():
                     maquina = Maquina(*row)
                     json_data = maquina.to_JSON()
 
-                    # Calcular índice de salud
+               
                     indice = 0
                     for sensor, peso in pesos.items():
                         valor = float(json_data[sensor]) if json_data[sensor] is not None else None
