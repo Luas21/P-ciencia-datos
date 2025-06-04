@@ -1,9 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 #from config import config
-from routes import maquina, historico
+from routes import historico
 from models.maquinaModel import MaquinaModel
 
 app = Flask(__name__)
+print(app.url_map)
 
 @app.route('/')
 def index():
