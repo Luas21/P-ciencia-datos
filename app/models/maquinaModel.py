@@ -97,7 +97,7 @@ class MaquinaModel():
             
             # Convertir a datetime y extraer año-mes
             df['date'] = pd.to_datetime(df['date'])
-            df['month_str'] = df['date'].dt.to_period('M').astype(str)  # '2025-04', '2025-05', etc.
+            df['day_str'] = df['date'].dt.strftime('%Y-%m-%d')  # '2025-06-01', '2025-06-02', etc.
 
             fecha_min = df['date'].min().strftime('%Y-%m-%d')
             fecha_max = df['date'].max().strftime('%Y-%m-%d')
@@ -107,17 +107,19 @@ class MaquinaModel():
             funcionando = len(df[df['downtime'] == 0])
             caido = len(df[df['downtime'] == 1])
 
-            meses = sorted(df['month_str'].unique())
+            # Días únicos ordenados
+            dias = sorted(df['day_str'].unique())
 
-            grouped = df.groupby(['month_str', 'machine_id', 'downtime']).size().reset_index(name='count')
+            # Agrupar por día, máquina y estado
+            grouped = df.groupby(['day_str', 'machine_id', 'downtime']).size().reset_index(name='count')
             grouped['machine_id_str'] = grouped['machine_id'].astype(str)
 
             maquinas = {}
             for machine_id in df['machine_id'].unique():
                 estados = []
-                for mes in meses:
+                for dia in dias:
                     match = grouped[
-                        (grouped['month_str'] == mes) &
+                        (grouped['day_str'] == dia) &
                         (grouped['machine_id_str'] == str(machine_id)) &
                         (grouped['downtime'] == 1)
                     ]
@@ -128,11 +130,12 @@ class MaquinaModel():
             return {
                 'funcionando': funcionando,
                 'caido': caido,
-                'fechas': meses,
+                'fechas': dias,
                 'maquinas': maquinas,
                 'fecha_min': fecha_min,
                 'fecha_max': fecha_max
             }
 
-        except Exception as e:
-            return {'error': str(e)}
+
+                    except Exception as e:
+                        return {'error': str(e)}
