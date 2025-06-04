@@ -78,6 +78,12 @@ body {
     padding: 20px;
 }
 
+.btn-recomendado {
+    background-color: #fff3cd; 
+    color: #856404;            
+    border: 1px solid #ffeeba;
+}
+
 /* Responsive - menú hamburguesa */
 @media (max-width: 991px) {
 
