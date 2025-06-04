@@ -14,14 +14,18 @@ class MaquinaModel():
 
             with connection.cursor() as cursor:
                 cursor.execute("""
-                                 SELECT *
-                                 FROM machine_data t
-                                 INNER JOIN (
-                                     SELECT machine_id, MAX(date) AS max_date
-                                     FROM machine_data
-                                     GROUP BY machine_id
-                                 ) latest ON t.machine_id = latest.machine_id AND t.date = latest.max_date
-                                 ORDER BY t.machine_id ASC
+                                 SELECT t.id, t.date, t.machine_id, t.assembly_line_no, 
+                                    t.hydraulic_pressure_bar, t.coolant_pressure_bar, t.air_system_pressure_bar,
+                                    t.coolant_temperature, t.hydraulic_oil_temperature, t.spindle_bearing_temperature,
+                                    t.spindle_vibration, t.tool_vibration, t.spindle_speed_rpm, t.voltage_volts,
+                                    t.torque_nm, t.cutting_kn, t.downtime
+                                FROM machine_data t
+                                INNER JOIN (
+                                    SELECT machine_id, MAX(date) AS max_date
+                                    FROM machine_data
+                                    GROUP BY machine_id
+                                ) latest ON t.machine_id = latest.machine_id AND t.date = latest.max_date
+
                              """)
                 resulset=cursor.fetchall()
 
