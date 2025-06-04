@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, render_template, request
 from models.maquinaModel import MaquinaModel
 
-main=Blueprint('historico_blueprint',__name__)
+main=Blueprint('historico',__name__)
 
 @main.route('/')
 def get_historico():
