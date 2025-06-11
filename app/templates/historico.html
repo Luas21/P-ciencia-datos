@@ -18,11 +18,12 @@
         <div class="col-md-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary w-100">Generar Gráficos</button>
         </div>
-
         <div class="col-md-4"> 
             <label class="form-label">Se tiene registro desde:</label> 
             <input type="text" class="form-control" value="{{ historico.date}}" readonly>
         </div>
+
+
     </form>
 
     <hr class="my-4">
@@ -37,9 +38,7 @@
     <hr class="my-4">
 
     <div class="row" id="graficosMaquinas"></div>
-
     <hr class="my-4">
-
     <div class="col-12 mb-4 d-flex justify-content-center">
         <div style="max-width: 400px; width: 100%;">
             <h5 class="text-center">Estado Global</h5>
@@ -48,6 +47,7 @@
     </div>
 </div>
 
+<!-- Chart.js desde CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('filtro-fechas');
     const inputStart = document.getElementById('start_date');
     const inputEnd = document.getElementById('end_date');
-    const registroInicio = document.getElementById('registro_desde');
 
     const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
     const ctxLineas = document.getElementById('graficoLineas').getContext('2d');
@@ -74,9 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputStart.value = data.fecha_min;
                 inputEnd.value = data.fecha_max;
             }
-
-            // Mostrar fecha mínima en el campo correspondiente
-            registroInicio.value = data.fecha_min;
 
             const datosPastel = {
                 labels: ['Normal', 'Mantenimiento'],
@@ -114,11 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
+            // Sección dinámica para todas las máquinas
             const graficosContainer = document.getElementById('graficosMaquinas');
-            graficosContainer.innerHTML = ''; // Limpiar
+            graficosContainer.innerHTML = ''; // Limpiar contenido previo
 
             Object.entries(data.maquinas).forEach(([machine_id, estados], index) => {
                 const canvasId = `graficoMaq${index}`;
+
                 const div = document.createElement('div');
                 div.className = 'col-md-6 mb-4';
                 div.innerHTML = `
