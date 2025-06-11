@@ -32,10 +32,8 @@ body {
 }
 
 .logo {
-    font-size: 25px;
-    color: #ffffff;
-    text-transform: uppercase;
-    font-weight: bold;
+    width: 120px;
+    height: auto;
     display: block;
 }
 
@@ -86,6 +84,10 @@ body {
 
 /* Responsive - menú hamburguesa */
 @media (max-width: 991px) {
+
+     .logo {
+        width: 90px;
+    }
 
     .menu {
         top: 10px;

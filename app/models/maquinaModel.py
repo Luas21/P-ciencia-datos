@@ -2,7 +2,6 @@ from database.db import get_connection
 from .entities.Maquina import Maquina
 from flask import jsonify
 import pandas as pd
-import traceback
 
 class MaquinaModel():
 
@@ -15,40 +14,43 @@ class MaquinaModel():
 
             with connection.cursor() as cursor:
                 cursor.execute("""
-                                 SELECT t.id, t.date, t.machine_id, t.assembly_line_no, 
-                                    t.hydraulic_pressure_bar, t.coolant_pressure_bar, t.air_system_pressure_bar,
-                                    t.coolant_temperature, t.hydraulic_oil_temperature, t.spindle_bearing_temperature,
-                                    t.spindle_vibration, t.tool_vibration, t.spindle_speed_rpm, t.voltage_volts,
-                                    t.torque_nm, t.cutting_kn, t.downtime
-                                FROM machine_data t
-                                JOIN (
-                                    SELECT machine_id, MAX(id) as max_id
-                                    FROM machine_data
-                                    WHERE (machine_id, date) IN (
-                                        SELECT machine_id, MAX(date)
-                                        FROM machine_data
-                                        GROUP BY machine_id
-                                    )
-                                    GROUP BY machine_id
-                                ) latest ON t.id = latest.max_id
-                                ORDER BY t.machine_id;
-                             """)
-                resulset=cursor.fetchall()
+                    SELECT t.id, t.date, t.machine_id, t.assembly_line_no, 
+                        t.hydraulic_pressure_bar, t.coolant_pressure_bar, t.air_system_pressure_bar,
+                        t.coolant_temperature, t.hydraulic_oil_temperature, t.spindle_bearing_temperature,
+                        t.spindle_vibration, t.tool_vibration, t.spindle_speed_rpm, t.voltage_volts,
+                        t.torque_nm, t.cutting_kn, t.downtime
+                    FROM machine_data t
+                    JOIN (
+                        SELECT machine_id, MAX(id) as max_id
+                        FROM machine_data
+                        WHERE (machine_id, date) IN (
+                            SELECT machine_id, MAX(date)
+                            FROM machine_data
+                            GROUP BY machine_id
+                        )
+                        GROUP BY machine_id
+                    ) latest ON t.id = latest.max_id
+                    ORDER BY t.machine_id;
+                """)
+                resulset = cursor.fetchall()
 
                 for row in resulset:
                     maquina = Maquina(*row)
                     json_data = maquina.to_JSON()
+
+                    # Clasificar estado basado
                     if json_data['downtime'] == 0:
                         json_data['estado'] = 'Normal'
                     else:
                         json_data['estado'] = 'Crítico'
+                        
                     maquinas.append(json_data)
+
             connection.close()
             return maquinas
 
         except Exception as e:
-            traceback_str = traceback.format_exc()
-            raise Exception(f'Error en get_maquina: {str(e)}\n{traceback_str}')
+            raise Exception(f'Error en get_maquina: {str(e)}')
 
     
     #consulta para detalle_maquina, obtener la información del registro seleccionado.
