@@ -23,7 +23,7 @@ body {
 
 .menu {
     position: relative;
-    top: 20px;
+    top: 5px;
     left: 0;
     right: 0;
     display: flex;
@@ -32,7 +32,7 @@ body {
 }
 
 .logo {
-    width: 80%;
+    width: 10%;
     height: auto;
 }
 
