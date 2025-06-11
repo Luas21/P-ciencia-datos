@@ -21,7 +21,7 @@
                     <td>{{ maquina.machine_id }}</td>
                     <td>{{ maquina.assembly_line_no }}</td>
                     {% if maquina.downtime == 1 %}
-                        <td>Caído</td>
+                        <td>Necesita mantenimiento</td>
                     {% else %}
                         <td>Funcionando</td>
                     {% endif %}
