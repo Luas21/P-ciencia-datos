@@ -9,7 +9,8 @@
         <thead class="table-primary text-center">
             <tr>
                 <th>Machine ID</th>
-                <th>Última Fecha</th>
+                <th>Fecha</th>
+                <th>Presión hidráulica</th>
                 <th>Estado</th>
             </tr>
         </thead>
@@ -18,13 +19,10 @@
             <tr>
                 <td>{{ m.machine_id }}</td>
                 <td>{{ m.date }}</td>
+                <td>{{ m.hydraulic_pressure_bar }}</td>
                 <td>
                     {% if m.estado == 'Crítico' %}
-                        <a href="{{ url_for('get_maquina', id=m.id) }}" class="btn btn-danger btn-sm">Crítico</a>
-                    {% elif m.estado == 'Necesario' %}
-                        <a href="{{ url_for('get_maquina', id=m.id) }}" class="btn btn-warning btn-sm">Necesario</a>
-                    {% elif m.estado == 'Recomendado' %}
-                        <a href="{{ url_for('get_maquina', id=m.id) }}" class="btn btn-recomendado btn-sm">Recomendado</a>
+                        <a href="{{ url_for('get_maquina', id=m.id) }}" class="btn btn-danger btn-sm">Necesita mantenimiento</a>
                     {% else %}
                         <a href="{{ url_for('get_maquina', id=m.id) }}" class="btn btn-success btn-sm">Normal</a>
                     {% endif %}
