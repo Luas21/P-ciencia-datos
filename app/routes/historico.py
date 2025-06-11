@@ -6,7 +6,7 @@ main=Blueprint('historico',__name__)
 @main.route('/')
 def get_historico():
     try:
-        historico = 'hola'
+        historico = 'Histórico de máquinas'
         return render_template('historico.html',historico=historico)
     except Exception as ex:
         return jsonify({'message': str(ex)}),500

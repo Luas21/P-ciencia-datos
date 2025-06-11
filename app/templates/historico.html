@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Histórico de Máquinas</h2>
+    <h2 class="text-center mb-4">Histórico de mantenimiento en máquinas</h2>
 
     <form id="filtro-fechas" class="row g-3 justify-content-center">
         <div class="col-md-4">
@@ -17,6 +17,10 @@
         </div>
         <div class="col-md-2 d-flex align-items-end">
             <button type="submit" class="btn btn-primary w-100">Generar Gráficos</button>
+        </div>
+        <div class="col-md-4">
+            <label for="registro_inicio" class="form-label">Se tiene registro desde:</label>
+            <input type="date" class="form-control" id="registro_inicio" readonly>
         </div>
     </form>
 
@@ -32,7 +36,9 @@
     <hr class="my-4">
 
     <div class="row" id="graficosMaquinas"></div>
+
     <hr class="my-4">
+
     <div class="col-12 mb-4 d-flex justify-content-center">
         <div style="max-width: 400px; width: 100%;">
             <h5 class="text-center">Estado Global</h5>
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('filtro-fechas');
     const inputStart = document.getElementById('start_date');
     const inputEnd = document.getElementById('end_date');
+    const registroInicio = document.getElementById('registro_inicio');
 
     const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
     const ctxLineas = document.getElementById('graficoLineas').getContext('2d');
@@ -68,8 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputEnd.value = data.fecha_max;
             }
 
+            registroInicio.value = data.fecha_min;
+
             const datosPastel = {
-                labels: ['Funcionando', 'Caído'],
+                labels: ['Normal', 'Mantenimiento'],
                 datasets: [{
                     data: [data.funcionando, data.caido],
                     backgroundColor: ['#4CAF50', '#F44336']
@@ -99,14 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     responsive: true,
                     scales: {
                         x: { title: { display: true, text: 'Fecha' } },
-                        y: { title: { display: true, text: 'Cantidad de caídas' }, beginAtZero: true }
+                        y: { title: { display: true, text: 'Cantidad de mantenimientos' }, beginAtZero: true }
                     }
                 }
             });
 
-            // Sección dinámica para todas las máquinas
+            // Sección dinámica por máquina
             const graficosContainer = document.getElementById('graficosMaquinas');
-            graficosContainer.innerHTML = ''; // Limpiar contenido previo
+            graficosContainer.innerHTML = ''; // Limpiar
 
             Object.entries(data.maquinas).forEach(([machine_id, estados], index) => {
                 const canvasId = `graficoMaq${index}`;
@@ -136,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         responsive: true,
                         scales: {
                             x: { title: { display: true, text: 'Fecha' } },
-                            y: { title: { display: true, text: 'Caídas' }, beginAtZero: true }
+                            y: { title: { display: true, text: 'Cantidad de mantenimientos' }, beginAtZero: true }
                         }
                     }
                 });
@@ -152,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
         cargarGraficos(start_date, end_date, false);
     });
 
-    // Cargar por defecto al iniciar (últimos 3 meses)
     const hoy = new Date();
     const hace3meses = new Date();
     hace3meses.setMonth(hoy.getMonth() - 3);
