@@ -1,15 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 from decouple import config
-#from config import config
 from routes import historico
 from models.maquinaModel import MaquinaModel
 
-class Config:
-    SECRET_KEY=config('SECRET_KEY')
-
 app = Flask(__name__)
 app.register_blueprint(historico.main, url_prefix='/Historico')
-
 
 @app.route('/')
 def index():
@@ -24,8 +19,6 @@ def index():
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
 
-#Aquí corté la ruta de historico
-
 @app.route('/detalle_maquina/<int:id>')
 def get_maquina(id):
     try:
@@ -39,10 +32,6 @@ def page_not_found(error):
     return "<h1>Nada por aquí...</h1>", 404
 
 if __name__=='__main__':
-    #app.config.from_object(config['development']) 
-
-    #registro de otras rutas
-    #app.register_blueprint(maquina.main, url_prefix='/detalle/<index>')
 
     app.register_error_handler(404, page_not_found)
     app.run()
