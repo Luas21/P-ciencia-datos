@@ -145,3 +145,33 @@ class MaquinaModel():
 
         except Exception as e:
             return {'error': str(e)}
+
+    @classmethod
+    def get_fecha(self):
+        try:
+            connection = get_connection()
+            primera_fecha = []
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT t.id, t.date, t.machine_id, t.assembly_line_no, 
+                        t.hydraulic_pressure_bar, t.coolant_pressure_bar, t.air_system_pressure_bar,
+                        t.coolant_temperature, t.hydraulic_oil_temperature, t.spindle_bearing_temperature,
+                        t.spindle_vibration, t.tool_vibration, t.spindle_speed_rpm, t.voltage_volts,
+                        t.torque_nm, t.cutting_kn, t.downtime
+                    FROM machine_data t
+                    ORDER BY date ASC
+                    LIMIT 1
+                    """)
+                resulset = cursor.fetchall()
+
+                for row in resulset:
+                    maquina = Maquina(*row)
+                    json_data = maquina.to_JSON()
+                    primera_fecha.append(json_data)
+                    
+            connection.close()
+            return primera_fecha[0] if primera_fecha else None
+
+        except Exception as e:
+            return {'error': str(e)}

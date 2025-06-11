@@ -19,10 +19,9 @@
             <button type="submit" class="btn btn-primary w-100">Generar Gráficos</button>
         </div>
 
-        <!-- Campo solo para mostrar la fecha mínima registrada -->
-        <div class="col-md-4">
-            <label for="registro_desde" class="form-label">Se tiene registro desde:</label>
-            <input type="date" class="form-control" id="registro_desde" readonly>
+        <div class="col-md-4"> 
+            <label class="form-label">Se tiene registro desde:</label> 
+            <input type="text" class="form-control" value="{{ historico.date}}" readonly>
         </div>
     </form>
 
