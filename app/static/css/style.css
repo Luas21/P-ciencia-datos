@@ -34,7 +34,7 @@ body {
 .logo {
     width: 120px;
     height: auto;
-    display: block;
+    vertical-align: middle;
 }
 
 #menu {

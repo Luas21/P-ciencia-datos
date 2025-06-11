@@ -27,23 +27,16 @@
             <h5 class="text-center">Comparativa Global</h5>
             <canvas id="graficoLineas"></canvas>
         </div>
-        <div class="col-md-6 mb-4">
-            <h5 class="text-center" id="tituloMaq1">Máquina 1</h5>
-            <canvas id="graficoMaq1"></canvas>
-        </div>
-        <div class="col-md-6 mb-4">
-            <h5 class="text-center" id="tituloMaq2">Máquina 2</h5>
-            <canvas id="graficoMaq2"></canvas>
-        </div>
-        <div class="col-md-6 mb-4">
-            <h5 class="text-center" id="tituloMaq3">Máquina 3</h5>
-            <canvas id="graficoMaq3"></canvas>
-        </div>
-        <div class="col-12 mb-4 d-flex justify-content-center">
-            <div style="max-width: 400px; width: 100%;">
-                <h5 class="text-center">Estado Global</h5>
-                <canvas id="graficoPastel"></canvas>
-            </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row" id="graficosMaquinas"></div>
+
+    <div class="col-12 mb-4 d-flex justify-content-center">
+        <div style="max-width: 400px; width: 100%;">
+            <h5 class="text-center">Estado Global</h5>
+            <canvas id="graficoPastel"></canvas>
         </div>
     </div>
 </div>
@@ -59,11 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const ctxPastel = document.getElementById('graficoPastel').getContext('2d');
     const ctxLineas = document.getElementById('graficoLineas').getContext('2d');
-    const ctxMaq1 = document.getElementById('graficoMaq1').getContext('2d');
-    const ctxMaq2 = document.getElementById('graficoMaq2').getContext('2d');
-    const ctxMaq3 = document.getElementById('graficoMaq3').getContext('2d');
 
-    let graficoPastel, graficoLineas, graficoMaq1, graficoMaq2, graficoMaq3;
+    let graficoPastel, graficoLineas;
 
     function cargarGraficos(start_date, end_date, actualizarInputs = true) {
         fetch('/Historico/api/graficos', {
@@ -114,27 +104,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            const maquinas = Object.entries(data.maquinas);
-            const machineCharts = [ctxMaq1, ctxMaq2, ctxMaq3];
+            // Sección dinámica para todas las máquinas
+            const graficosContainer = document.getElementById('graficosMaquinas');
+            graficosContainer.innerHTML = ''; // Limpiar contenido previo
 
-            for (let i = 0; i < 3; i++) {
-                if (!maquinas[i]) continue;
-                const [machine_id, estados] = maquinas[i];
+            Object.entries(data.maquinas).forEach(([machine_id, estados], index) => {
+                const canvasId = `graficoMaq${index}`;
 
-                document.getElementById(`tituloMaq${i + 1}`).textContent = `Máquina ${machine_id}`;
+                const div = document.createElement('div');
+                div.className = 'col-md-6 mb-4';
+                div.innerHTML = `
+                    <h5 class="text-center">Máquina ${machine_id}</h5>
+                    <canvas id="${canvasId}"></canvas>
+                `;
+                graficosContainer.appendChild(div);
 
-                if (i === 0 && graficoMaq1) graficoMaq1.destroy();
-                if (i === 1 && graficoMaq2) graficoMaq2.destroy();
-                if (i === 2 && graficoMaq3) graficoMaq3.destroy();
-
-                const chart = new Chart(machineCharts[i], {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels,
                         datasets: [{
                             label: `Máquina ${machine_id}`,
                             data: estados,
-                            borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                            borderColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
                             fill: false,
                             tension: 0.2
                         }]
@@ -147,11 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                 });
-
-                if (i === 0) graficoMaq1 = chart;
-                if (i === 1) graficoMaq2 = chart;
-                if (i === 2) graficoMaq3 = chart;
-            }
+            });
         })
         .catch(error => console.error('Error al obtener los datos:', error));
     }
