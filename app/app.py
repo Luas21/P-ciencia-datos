@@ -1,7 +1,11 @@
 from flask import Flask, render_template, jsonify, request
+from decouple import config
 #from config import config
 from routes import historico
 from models.maquinaModel import MaquinaModel
+
+class Config:
+    SECRET_KEY=config('SECRET_KEY')
 
 app = Flask(__name__)
 app.register_blueprint(historico.main, url_prefix='/Historico')

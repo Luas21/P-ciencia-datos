@@ -11,6 +11,6 @@ def get_connection():
             password=config('DB_PASSWORD'),
             database=config('DB_NAME'),
             port=config('DB_PORT')
-        )
+        ) 
     except DatabaseError as ex:
         raise ex
